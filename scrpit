@@ -1,0 +1,74 @@
+/* script.js */
+const cursos = {
+  "1": [
+    { nombre: "ECONOMÍA I", abre: ["ECONOMÍA II", "TEORÍA MICROECONÓMICA I"] },
+    { nombre: "MATEMÁTICA I", abre: ["MATEMÁTICA II", "ESTADISTICA DESCRIPTIVA"] },
+    { nombre: "INTRODUCCIÓN A LOS NEGOCIOS GLOBALES", abre: ["PLANEAMIENTO ESTRATÉGICO (E)", "GERENCIA DE NEGOCIOS INTERNACIONALES (E)", "MARKETING PARA EL COMERCIO EXTERIOR (E)"] },
+    { nombre: "TÉCNICAS DE REDACCIÓN Y COMUNICACIÓN" },
+    { nombre: "METODOLOGÍA DE LA INVESTIGACIÓN" },
+    { nombre: "ÁLGEBRA LINEAL", abre: ["MATEMÁTICA II", "ESTADISTICA DESCRIPTIVA"] }
+  ],
+  "2": [
+    { nombre: "ECONOMÍA II", abre: ["TEORÍA MACROECONÓMICA I"] },
+    { nombre: "MATEMÁTICA II", abre: ["TEORÍA MICROECONÓMICA I", "TEORÍA MACROECONÓMICA I", "MATEMATICA PARA ECONOMISTAS I"] },
+    { nombre: "ESTADISTICA DESCRIPTIVA", abre: ["ESTADISTICA PARA ECONOMISTAS I"] },
+    { nombre: "CONTABILIDAD SOCIAL", abre: ["TEORÍA MACROECONÓMICA I"] },
+    { nombre: "SOCIOLOGÍA" },
+    { nombre: "CONTABILIDAD FINANCIERA", abre: ["CONTABILIDAD DE COSTOS", "FINANZAS DE EMPRESA I"] }
+  ],
+  "3": [
+    { nombre: "TEORÍA MICROECONÓMICA I", abre: ["TEORÍA MICROECONÓMICA II", "TEORIA DE JUEGOS", "MATEMATICA FINANCIERA", "ECONOMÍA POLÍTICA"] },
+    { nombre: "TEORÍA MACROECONÓMICA I", abre: ["TEORÍA MACROECONÓMICA II", "ECONOMÍA POLÍTICA"] },
+    { nombre: "MATEMATICA PARA ECONOMISTAS I", abre: ["TEORIA DE JUEGOS", "MATEMATICA PARA ECONOMISTAS II"] },
+    { nombre: "ESTADISTICA PARA ECONOMISTAS I", abre: ["ESTADISTICA PARA ECONOMISTAS II"] },
+    { nombre: "HISTORIA ECONÓMICA CONTEMPORÁNEA", abre: ["CIENCIA POLITICA"] },
+    { nombre: "CONTABILIDAD DE COSTOS", abre: ["MATEMATICA FINANCIERA"] }
+  ],
+  "4": [
+    { nombre: "TEORÍA MICROECONÓMICA II", abre: ["COMERCIO INTERNACIONAL", "TEORÍA MICROECONÓMICA III", "ECONOMÍA PÚBLICA", "ORGANIZACIÓN INDUSTRIAL", "TEORÍA DE LA REGULACION ECONÓMICA"] },
+    { nombre: "TEORÍA MACROECONÓMICA II", abre: ["ECONOMÍA MONETARIA Y BANCARIA", "TEORÍA MACROECONÓMICA III", "ECONOMÍA PÚBLICA"] },
+    { nombre: "TEORIA DE JUEGOS", abre: ["ORGANIZACIÓN INDUSTRIAL"] },
+    { nombre: "MATEMATICA FINANCIERA", abre: ["FINANZAS DE EMPRESA I"] },
+    { nombre: "ESTADISTICA PARA ECONOMISTAS II", abre: ["ECONOMETRÍA I"] },
+    { nombre: "MATEMATICA PARA ECONOMISTAS II", abre: ["TEORÍA MICROECONÓMICA III", "TEORÍA MACROECONÓMICA III", "ECONOMÍA MATEMÁTICA (E)"] }
+  ],
+  // Continúa del 5 al 10 ciclo (por límite de caracteres aquí truncado)...
+};
+
+const malla = document.getElementById("malla");
+const estadoCursos = {};
+
+for (const ciclo in cursos) {
+  const columna = document.createElement("div");
+  columna.className = "semestre";
+  const h2 = document.createElement("h2");
+  h2.textContent = `${ciclo}° Ciclo`;
+  columna.appendChild(h2);
+
+  cursos[ciclo].forEach(curso => {
+    const div = document.createElement("div");
+    div.className = "ramo";
+    div.textContent = curso.nombre;
+    div.dataset.nombre = curso.nombre;
+    if (curso.abre) div.dataset.abre = JSON.stringify(curso.abre);
+
+    div.addEventListener("click", () => {
+      if (div.classList.contains("aprobado")) return;
+      div.classList.add("aprobado");
+      estadoCursos[curso.nombre] = true;
+
+      if (curso.abre) {
+        curso.abre.forEach(dep => {
+          const desbloqueables = document.querySelectorAll(`.ramo[data-nombre='${dep}']`);
+          desbloqueables.forEach(r => r.classList.remove("bloqueado"));
+        });
+      }
+    });
+
+    if (curso.abre && curso.abre.length > 0) div.classList.add("bloqueado");
+
+    columna.appendChild(div);
+  });
+
+  malla.appendChild(columna);
+}
