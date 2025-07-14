@@ -1,0 +1,47 @@
+/* styles.css */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fdf6f0;
+  margin: 0;
+  padding: 2rem;
+}
+h1 {
+  text-align: center;
+  color: #555;
+}
+.grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+.semestre {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+  min-width: 220px;
+  flex-shrink: 0;
+}
+.semestre h2 {
+  font-size: 1.1rem;
+  text-align: center;
+  color: #6d6d6d;
+}
+.ramo {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background-color: #f2e8ff;
+  border-left: 6px solid #c9a0ff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.ramo:hover {
+  background-color: #e8dcff;
+}
+.ramo.aprobado {
+  background-color: #d0f5d3;
+  border-left-color: #7bc47f;
+  text-decoration: line-through;
+}
